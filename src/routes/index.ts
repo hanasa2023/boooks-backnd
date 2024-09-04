@@ -32,6 +32,7 @@ listRouter.post(Paths.Lists.Update, ListRoutes.updateList)
 bookRouter.post(Paths.Books.Get, BookRoutes.getBooksByList)
 bookRouter.post(Paths.Books.Create, BookRoutes.createBookInList)
 bookRouter.post(Paths.Books.Delete, BookRoutes.deleteBook)
+bookRouter.post(Paths.Books.UploadImg, BookRoutes.uploadBookImgsInList)
 
 // Add UserRouter
 apiRouter.use(Paths.Users.Base, userRouter)

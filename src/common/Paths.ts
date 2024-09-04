@@ -3,7 +3,7 @@
  */
 
 export default {
-  Base: '/api',
+  Base: '/v1',
   Users: {
     Base: '/users',
     Get: '/all',
@@ -23,5 +23,6 @@ export default {
     Get: '/get',
     Create: '/create',
     Delete: '/delete',
+    UploadImg: '/uploadImg',
   },
 } as const

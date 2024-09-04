@@ -11,11 +11,40 @@ async function getBooksByList(req: IReq<{ listName: string }>, res: IRes) {
   return res.status(HttpStatusCodes.OK).json(books)
 }
 
-async function createBookInList(req: IReq<BookData>, res: IRes) {
-  const bookData = req.body
-  const r = await BookService.createBooksInList(bookData)
+async function createBookInList(req: IReq, res: IRes) {
+  const listName: string | undefined = req.header('list-name')
+  if (listName != undefined) {
+    const files: string[] = await BookService.uploadBooksInList(
+      req,
+      res,
+      listName,
+    )
 
-  return res.status(HttpStatusCodes.OK).json({ code: 200, msg: r })
+    files.forEach(async (fileName) => {
+      const bookData: BookData = {
+        name: fileName.substring(0, fileName.lastIndexOf('.')),
+        listName: listName,
+        fullName: fileName,
+      }
+
+      await BookService.createBooksInList(bookData)
+    })
+
+    return res
+      .status(HttpStatusCodes.OK)
+      .json({ code: 200, msg: 'Succefully create books' })
+  }
+}
+
+async function uploadBookImgsInList(req: IReq, res: IRes) {
+  const listName: string | undefined = req.header('list-name')
+  if (listName != undefined) {
+    await BookService.uploadBooksImgInList(req, res, listName)
+
+    return res
+      .status(HttpStatusCodes.OK)
+      .json({ code: 200, msg: 'Succefully upload book img' })
+  }
 }
 
 async function deleteBook(req: IReq<{ bookName: string }>, res: IRes) {
@@ -28,5 +57,6 @@ async function deleteBook(req: IReq<{ bookName: string }>, res: IRes) {
 export default {
   getBooksByList,
   createBookInList,
+  uploadBookImgsInList,
   deleteBook,
 } as const
