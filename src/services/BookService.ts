@@ -8,6 +8,8 @@ import multer from 'multer'
 
 const commonPath = 'src/books'
 
+// TODO: 自动修改封面图尺寸及格式
+
 async function getBooksByList(listName: string): Promise<Book[]> {
   return await prisma.book.findMany({
     where: {
@@ -129,7 +131,7 @@ async function deleteBook(bookName: string): Promise<string> {
       )
       fs.rmSync(bookPath)
       const bookImgPath = path.resolve(
-        `src/books/imgs/${book.listName}/${book.fullName}`,
+        `src/books/imgs/${book.listName}/${book.name}.webp`,
       )
       fs.rmSync(bookImgPath)
       return `Delete book  ${book.name}`
